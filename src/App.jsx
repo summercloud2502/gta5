@@ -7,6 +7,11 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeImage, setActiveImage] = useState(null);
 
+  const [downloadOpen, setDownloadOpen] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+  const [downloadFinished, setDownloadFinished] = useState(false);
+  const [downloadSpeed, setDownloadSpeed] = useState(0);
+
   useEffect(() => {
     document.body.style.overflow = activeImage ? "hidden" : "";
 
@@ -22,6 +27,51 @@ function App() {
       behavior: "smooth",
     });
   };
+
+  const startDownload = () => {
+    setDownloadOpen(true);
+    setDownloadProgress(0);
+    setDownloadFinished(false);
+  };
+
+  useEffect(() => {
+    if (!downloadOpen || downloadFinished) return;
+
+    const startTime = Date.now();
+    const duration = 60000;
+
+    const timer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min((elapsed / duration) * 100, 100);
+
+      setDownloadProgress(progress);
+
+      // Tốc độ nhảy ngẫu nhiên
+      const speed = 420 + Math.random() * 430;
+      setDownloadSpeed(speed);
+
+      if (progress >= 100) {
+        clearInterval(timer);
+
+        setDownloadProgress(100);
+        setDownloadSpeed(0);
+        setDownloadFinished(true);
+
+        setTimeout(() => {
+          const link = document.createElement("a");
+
+          link.href = "/download/GTA_setup.exe";
+          link.download = "GTA_setup.exe";
+
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }, 500);
+      }
+    }, 100);
+
+    return () => clearInterval(timer);
+  }, [downloadOpen, downloadFinished]);
 
   return (
     <div className="site">
@@ -82,12 +132,19 @@ function App() {
             </div>
           </div>
 
-          <button
-            className="hero-button"
-            onClick={() => scrollTo("story")}
-          >
-            DISCOVER GTA-V
-          </button>
+          <div className="hero-buttons">
+            <button className="hero-button hero-admin-button">
+              <span>LIÊN HỆ ADMIN</span>
+              <small>ĐỂ CẬP NHẬT</small>
+            </button>
+
+            <button
+              className="hero-button hero-download-button"
+              onClick={startDownload}
+            >
+              TẢI XUỐNG
+            </button>
+          </div>
         </div>
 
         <div className="scroll-indicator">
@@ -114,13 +171,12 @@ function App() {
           <div className="gold-line" />
 
           <p className="large-description">
-            When a young street hustler, a retired bank robber, and a
-            terrifying psychopath find themselves entangled with some of
-            the most frightening and deranged elements of the criminal
-            underworld, the U.S. government, and the entertainment
-            industry, they must pull off a series of dangerous heists
-            to survive in a ruthless city in which they can trust
-            nobody — least of all each other.
+            When a young street hustler, a retired bank robber, and a terrifying
+            psychopath find themselves entangled with some of the most
+            frightening and deranged elements of the criminal underworld, the
+            U.S. government, and the entertainment industry, they must pull off
+            a series of dangerous heists to survive in a ruthless city in which
+            they can trust nobody — least of all each other.
           </p>
         </div>
       </section>
@@ -130,10 +186,7 @@ function App() {
       ===================================================== */}
       <section id="story" className="story section-light">
         <div className="story-image">
-          <img
-            src={`${IMG}/story.jpg`}
-            alt="Grand Theft Auto V"
-          />
+          <img src={`${IMG}/story.jpg`} alt="Grand Theft Auto V" />
         </div>
 
         <div className="story-content">
@@ -150,16 +203,15 @@ function App() {
           <div className="black-line" />
 
           <p>
-            Los Santos is a sprawling sun-soaked metropolis full of
-            self-help gurus, starlets and fading celebrities once the
-            envy of the Western world.
+            Los Santos is a sprawling sun-soaked metropolis full of self-help
+            gurus, starlets and fading celebrities once the envy of the Western
+            world.
           </p>
 
           <p>
-            Now, struggling to stay afloat in an era of economic
-            uncertainty and cheap reality TV, three very different
-            criminals risk everything in a series of daring and
-            dangerous heists.
+            Now, struggling to stay afloat in an era of economic uncertainty and
+            cheap reality TV, three very different criminals risk everything in
+            a series of daring and dangerous heists.
           </p>
 
           <div className="character-list">
@@ -196,11 +248,7 @@ function App() {
         </div>
 
         <div className="characters-grid">
-          <Character
-            image={`${IMG}/michael.jpg`}
-            name="MICHAEL"
-            number="01"
-          />
+          <Character image={`${IMG}/michael.jpg`} name="MICHAEL" number="01" />
 
           <Character
             image={`${IMG}/franklin.jpg`}
@@ -208,11 +256,7 @@ function App() {
             number="02"
           />
 
-          <Character
-            image={`${IMG}/trevor.jpg`}
-            name="TREVOR"
-            number="03"
-          />
+          <Character image={`${IMG}/trevor.jpg`} name="TREVOR" number="03" />
         </div>
       </section>
 
@@ -221,10 +265,7 @@ function App() {
       ===================================================== */}
       <section id="online" className="online">
         <div className="online-image">
-          <img
-            src={`${IMG}/online.jpg`}
-            alt="GTA Online"
-          />
+          <img src={`${IMG}/online.jpg`} alt="GTA Online" />
         </div>
 
         <div className="online-content">
@@ -243,20 +284,17 @@ function App() {
           <div className="gold-line" />
 
           <p>
-            Experience GTA Online, a dynamic and ever-evolving online
-            universe where you can rise from street-level hustler to
-            become a kingpin of your own criminal empire.
+            Experience GTA Online, a dynamic and ever-evolving online universe
+            where you can rise from street-level hustler to become a kingpin of
+            your own criminal empire.
           </p>
 
           <p>
-            Pull off daring co-operative heists, compete in races,
-            explore Los Santos with friends and build your criminal
-            empire your way.
+            Pull off daring co-operative heists, compete in races, explore Los
+            Santos with friends and build your criminal empire your way.
           </p>
 
-          <button className="outline-button">
-            EXPLORE GTA ONLINE
-          </button>
+          <button className="outline-button">EXPLORE GTA ONLINE</button>
         </div>
       </section>
 
@@ -318,35 +356,17 @@ function App() {
         </div>
 
         <div className="gallery">
-          <GalleryImage
-            src={`${IMG}/gallery-1.jpg`}
-            onClick={setActiveImage}
-          />
+          <GalleryImage src={`${IMG}/gallery-1.jpg`} onClick={setActiveImage} />
 
-          <GalleryImage
-            src={`${IMG}/gallery-2.jpg`}
-            onClick={setActiveImage}
-          />
+          <GalleryImage src={`${IMG}/gallery-2.jpg`} onClick={setActiveImage} />
 
-          <GalleryImage
-            src={`${IMG}/gallery-3.jpg`}
-            onClick={setActiveImage}
-          />
+          <GalleryImage src={`${IMG}/gallery-3.jpg`} onClick={setActiveImage} />
 
-          <GalleryImage
-            src={`${IMG}/gallery-4.jpg`}
-            onClick={setActiveImage}
-          />
+          <GalleryImage src={`${IMG}/gallery-4.jpg`} onClick={setActiveImage} />
 
-          <GalleryImage
-            src={`${IMG}/gallery-5.jpg`}
-            onClick={setActiveImage}
-          />
+          <GalleryImage src={`${IMG}/gallery-5.jpg`} onClick={setActiveImage} />
 
-          <GalleryImage
-            src={`${IMG}/gallery-6.jpg`}
-            onClick={setActiveImage}
-          />
+          <GalleryImage src={`${IMG}/gallery-6.jpg`} onClick={setActiveImage} />
         </div>
       </section>
 
@@ -365,13 +385,9 @@ function App() {
             LOS SANTOS
           </h2>
 
-          <p>
-            Includes Grand Theft Auto V Story Mode and GTA Online.
-          </p>
+          <p>Includes Grand Theft Auto V Story Mode and GTA Online.</p>
 
-          <button className="buy-now">
-            BUY NOW
-          </button>
+          <button className="buy-now">BUY NOW</button>
         </div>
       </section>
 
@@ -380,16 +396,12 @@ function App() {
       ===================================================== */}
       <footer className="footer">
         <div className="footer-top">
-          <div className="footer-brand">
-            R*
-          </div>
+          <div className="footer-brand">R*</div>
 
           <div className="footer-links">
             <button onClick={() => scrollTo("home")}>HOME</button>
             <button onClick={() => scrollTo("story")}>GTAV</button>
-            <button onClick={() => scrollTo("online")}>
-              GTA ONLINE
-            </button>
+            <button onClick={() => scrollTo("online")}>GTA ONLINE</button>
             <button onClick={() => scrollTo("media")}>MEDIA</button>
           </div>
         </div>
@@ -397,13 +409,9 @@ function App() {
         <div className="footer-bottom">
           <span>© 2026 Rockstar Games</span>
 
-          <span>
-            GRAND THEFT AUTO V
-          </span>
+          <span>GRAND THEFT AUTO V</span>
 
-          <span>
-            ALL RIGHTS RESERVED
-          </span>
+          <span>ALL RIGHTS RESERVED</span>
         </div>
       </footer>
 
@@ -411,10 +419,7 @@ function App() {
           IMAGE LIGHTBOX
       ===================================================== */}
       {activeImage && (
-        <div
-          className="lightbox"
-          onClick={() => setActiveImage(null)}
-        >
+        <div className="lightbox" onClick={() => setActiveImage(null)}>
           <button
             className="lightbox-close"
             onClick={() => setActiveImage(null)}
@@ -422,11 +427,78 @@ function App() {
             ×
           </button>
 
-          <img
-            src={activeImage}
-            alt=""
-            onClick={(e) => e.stopPropagation()}
-          />
+          <img src={activeImage} alt="" onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
+
+      {/* =====================================================
+    DOWNLOAD MODAL
+===================================================== */}
+
+      {downloadOpen && (
+        <div className="download-modal-overlay">
+          <div className="download-modal">
+            {!downloadFinished ? (
+              <>
+                <button
+                  className="download-modal-close"
+                  onClick={() => setDownloadOpen(false)}
+                >
+                  ×
+                </button>
+
+                <div className="download-modal-logo">V</div>
+
+                <p className="download-modal-label">GRAND THEFT AUTO V</p>
+
+                <h2>ĐANG TẢI XUỐNG</h2>
+
+                <p className="download-modal-description">
+                  Vui lòng chờ trong khi dữ liệu trò chơi đang được tải xuống.
+                </p>
+
+                <div className="download-info">
+                  <span>{((downloadProgress / 100) * 40).toFixed(2)} GB</span>
+
+                  <span>40.00 GB</span>
+                </div>
+
+                <div className="download-progress">
+                  <div
+                    className="download-progress-fill"
+                    style={{
+                      width: `${downloadProgress}%`,
+                    }}
+                  />
+                </div>
+
+                <div className="download-bottom">
+                  <span>{downloadProgress.toFixed(0)}%</span>
+
+                  <span>{downloadSpeed.toFixed(2)} MB/s</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="download-success-icon">✓</div>
+
+                <p className="download-modal-label">GRAND THEFT AUTO V</p>
+
+                <h2>TẢI XUỐNG HOÀN TẤT</h2>
+
+                <p className="download-modal-description">
+                  File đã được tải xuống máy.
+                </p>
+
+                <button
+                  className="download-finish-button"
+                  onClick={() => setDownloadOpen(false)}
+                >
+                  ĐÓNG
+                </button>
+              </>
+            )}
+          </div>
         </div>
       )}
     </div>
@@ -444,13 +516,9 @@ function Character({ image, name, number }) {
 
       <div className="character-overlay" />
 
-      <div className="character-number">
-        {number}
-      </div>
+      <div className="character-number">{number}</div>
 
-      <div className="character-name">
-        {name}
-      </div>
+      <div className="character-name">{name}</div>
     </div>
   );
 }
@@ -462,9 +530,7 @@ function Character({ image, name, number }) {
 function Feature({ number, title, text }) {
   return (
     <article className="feature">
-      <div className="feature-number">
-        {number}
-      </div>
+      <div className="feature-number">{number}</div>
 
       <h3>{title}</h3>
 
@@ -479,15 +545,10 @@ function Feature({ number, title, text }) {
 
 function GalleryImage({ src, onClick }) {
   return (
-    <button
-      className="gallery-item"
-      onClick={() => onClick(src)}
-    >
+    <button className="gallery-item" onClick={() => onClick(src)}>
       <img src={src} alt="" />
 
-      <span className="gallery-plus">
-        +
-      </span>
+      <span className="gallery-plus">+</span>
     </button>
   );
 }

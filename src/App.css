@@ -359,6 +359,77 @@ a {
   color: #000;
 }
 
+.hero-buttons {
+  margin-top: 35px;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+
+  gap: 12px;
+}
+
+.hero-button {
+  min-width: 190px;
+  min-height: 52px;
+
+  padding: 12px 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  border: 1px solid rgba(255, 255, 255, 0.9);
+
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.8px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.hero-button:hover {
+  background: #fff;
+  color: #000;
+
+  transform: translateY(-2px);
+}
+
+.hero-admin-button span {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.7px;
+}
+
+.hero-admin-button small {
+  margin-top: 4px;
+
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 2px;
+
+  opacity: 0.65;
+}
+
+.hero-download-button {
+  background: #fff;
+  color: #000;
+}
+
+.hero-download-button:hover {
+  background: transparent;
+  color: #fff;
+}
+
 .scroll-indicator {
   position: absolute;
 
@@ -1399,5 +1470,261 @@ a {
   .media-heading h2,
   .buy-content h2 {
     font-size: 45px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-buttons {
+    width: 100%;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 10px;
+  }
+
+  .hero-button {
+    width: min(320px, 90vw);
+  }
+}
+
+/* =========================================================
+   DOWNLOAD MODAL
+========================================================= */
+
+.download-modal-overlay {
+  position: fixed;
+
+  z-index: 3000;
+
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.82);
+
+  backdrop-filter: blur(12px);
+}
+
+.download-modal {
+  position: relative;
+
+  width: min(560px, 100%);
+
+  padding: 55px 50px 45px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #171717,
+      #090909
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+
+  box-shadow:
+    0 30px 100px rgba(0, 0, 0, 0.8);
+
+  text-align: center;
+}
+
+.download-modal-close {
+  position: absolute;
+
+  top: 15px;
+  right: 15px;
+
+  width: 35px;
+  height: 35px;
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+
+  background: transparent;
+  color: #fff;
+
+  font-size: 24px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.download-modal-close:hover {
+  background: #fff;
+  color: #000;
+}
+
+.download-modal-logo {
+  width: 65px;
+  height: 65px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 3px solid #fff;
+
+  font-family: Georgia, serif;
+
+  font-size: 42px;
+  font-weight: 900;
+
+  transform: rotate(-5deg);
+}
+
+.download-modal-label {
+  margin-bottom: 12px;
+
+  color: #999;
+
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing: 3px;
+}
+
+.download-modal h2 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: clamp(25px, 5vw, 38px);
+  font-weight: 1000;
+
+  letter-spacing: -1px;
+}
+
+.download-modal-description {
+  max-width: 400px;
+
+  margin: 18px auto 35px;
+
+  color: #777;
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.download-info {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 9px;
+
+  color: #fff;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.download-progress {
+  width: 100%;
+  height: 8px;
+
+  overflow: hidden;
+
+  background: #292929;
+}
+
+.download-progress-fill {
+  height: 100%;
+
+  background: #fff;
+
+  transition: width 0.1s linear;
+}
+
+.download-bottom {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 12px;
+
+  color: #666;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.download-success-icon {
+  width: 70px;
+  height: 70px;
+
+  margin: 0 auto 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #fff;
+  border-radius: 50%;
+
+  color: #fff;
+
+  font-size: 35px;
+}
+
+.download-finish-button {
+  min-width: 150px;
+
+  padding: 14px 25px;
+
+  border: 1px solid #fff;
+
+  background: #fff;
+  color: #000;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 2px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.download-finish-button:hover {
+  background: transparent;
+  color: #fff;
+}
+
+
+/* =========================================================
+   DOWNLOAD MODAL - MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .download-modal {
+    padding: 50px 25px 35px;
+  }
+
+  .download-modal h2 {
+    font-size: 27px;
+  }
+
+  .download-modal-description {
+    font-size: 12px;
+  }
+
+  .download-progress {
+    height: 7px;
   }
 }
